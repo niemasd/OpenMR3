@@ -3,4 +3,5 @@
 Global functions and classes
 Niema Moshiri 2021
 '''
-__all__ = list() # TODO FILL WITH GLOBAL FUNCTIONS
+from OpenMR3.OpenData import OpenData
+__all__ = [OpenData]
