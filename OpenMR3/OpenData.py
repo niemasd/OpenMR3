@@ -21,7 +21,7 @@ opendata_dict_parser = Lark(r'''
     varname : varword [("." varword)*] ["PxStream"]
 
     dict : "[" [pair ";" (pair ";")*] "]"
-    pair : ("T" ESCAPED_STRING|CNAME) ":" [varname] value
+    pair : varname ":" [varname] value
 
     // not sure about lists, because the sample data only has () aka empty
     list : "(" [value ";" (value ";")*] ")"
@@ -43,4 +43,4 @@ class OpenData:
         data = data.replace(u'\ufeff','').strip()
         #print(data)
         self.tree = opendata_dict_parser.parse(data)
-        #print(self.tree)
+        print(self.tree)
