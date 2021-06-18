@@ -11,6 +11,7 @@ opendata_dict_parser = Lark(r'''
            | lengthproperty
            | stringproperty
            | weightproperty
+           | pxstream
            | varname
            | dict
            | list
@@ -23,9 +24,10 @@ opendata_dict_parser = Lark(r'''
     lengthproperty : "LengthProperty" dict
     stringproperty : "StringProperty" dict
     weightproperty : "WeightProperty" dict
+    pxstream : "PxStream" ESCAPED_STRING
 
     varword : ["@"] CNAME | "T" ESCAPED_STRING
-    varname : varword [("." varword)*] ["PxStream"]
+    varname : varword [("." varword)*]
 
     dict : "[" [pair ";" (pair ";")*] "]"
     pair : varname ":" value
@@ -42,6 +44,10 @@ opendata_dict_parser = Lark(r'''
     ''', start='opendata')
 
 class OpenDataTransformer(Transformer):
+    def pxstream(self, parts):
+        if len(parts) != 1:
+            raise ValueError("Invalid PxStream")
+        return {'__type__': 'PxStream', 'value': parts[0]}
     def lengthproperty(self, parts):
         parts[0]['__type'] = 'LengthProperty'
         return parts[0]
