@@ -3,6 +3,7 @@
 Convert `OpenData` file to JSON
 Niema Moshiri 2021
 '''
+from json import dump as jdump
 from OpenMR3 import OpenData
 if __name__ == "__main__":
     import argparse
@@ -15,4 +16,11 @@ if __name__ == "__main__":
         opendata = OpenData(stdin.read())
     else:
         opendata = OpenData(args.input)
-    # TODO CONVERT TO JSON
+    if args.output.lower() == 'stdout':
+        from sys import stdout as out
+    else:
+        out = open(args.output,'w')
+    jdump(opendata.opendata_dict, out)
+    if args.output.lower() == 'stdout':
+        print()
+    out.close()
