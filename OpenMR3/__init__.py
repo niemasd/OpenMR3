@@ -4,4 +4,5 @@ Global functions and classes
 Niema Moshiri 2021
 '''
 from OpenMR3.OpenData import OpenData
-__all__ = [OpenData]
+from OpenMR3.Record import Record
+__all__ = [OpenData, Record]
