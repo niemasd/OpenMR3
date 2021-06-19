@@ -16,9 +16,9 @@ class Record:
         self.path = path.rstrip('/')
         self.contents = OpenData('%s/contents' % self.path)
         if 'data' in self.contents and '__type__' in self.contents['data'] and self.contents['data']['__type__'] == 'PxStream':
-            self.data = OpenData('%s/%s' % (self.path, self.contents['data']['__value__']))
+            self.contents['data']['opendata'] = OpenData('%s/%s' % (self.path, self.contents['data']['__value__'])).get_dict()
         if 'layout' in self.contents and '__type__' in self.contents['layout'] and self.contents['layout']['__type__'] == 'PxStream':
-            self.layout = OpenData('%s/%s' % (self.path, self.contents['layout']['__value__']))
+            self.contents['layout']['opendata'] = OpenData('%s/%s' % (self.path, self.contents['layout']['__value__'])).get_dict()
 
     def get_dict(self):
         '''Get a `dict` representation of this `OpenData` object
@@ -26,9 +26,4 @@ class Record:
         Returns:
             A `dict` representation of this `OpenData object
         '''
-        out = {'contents': self.contents.get_dict()}
-        if hasattr(self, 'data'):
-            out['data'] = self.data.get_dict()
-        if hasattr(self, 'layout'):
-            out['layout'] = self.layout.get_dict()
-        return out
+        return {'path': self.path, 'contents': self.contents.get_dict()}
