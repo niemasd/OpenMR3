@@ -16,8 +16,7 @@ if __name__ == "__main__":
         from sys import stdout as out
     else:
         out = open(args.output,'w')
-    exit() # TODO
-    jdump(opendata.opendata_dict, out)
+    jdump(record.get_dict(), out)
     if args.output.lower() == 'stdout':
         print()
     out.close()

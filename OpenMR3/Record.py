@@ -15,4 +15,20 @@ class Record:
             raise ValueError("Record folder not found: %s" % path)
         self.path = path.rstrip('/')
         self.contents = OpenData('%s/contents' % self.path)
-        print(self.contents.get_dict())
+        if 'data' in self.contents and '__type__' in self.contents['data'] and self.contents['data']['__type__'] == 'PxStream':
+            self.data = OpenData('%s/%s' % (self.path, self.contents['data']['__value__']))
+        if 'layout' in self.contents and '__type__' in self.contents['layout'] and self.contents['layout']['__type__'] == 'PxStream':
+            self.layout = OpenData('%s/%s' % (self.path, self.contents['layout']['__value__']))
+
+    def get_dict(self):
+        '''Get a `dict` representation of this `OpenData` object
+
+        Returns:
+            A `dict` representation of this `OpenData object
+        '''
+        out = {'contents': self.contents.get_dict()}
+        if hasattr(self, 'data'):
+            out['data'] = self.data.get_dict()
+        if hasattr(self, 'layout'):
+            out['layout'] = self.layout.get_dict()
+        return out
